@@ -53,14 +53,44 @@ export default async function AdminDashboard() {
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
               {pending.map((c: any) => (
-                <div key={c.id} style={{ background: '#1a1a1a', border: '1px solid #2a2a2a', borderRadius: 12, padding: '20px 24px' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                    <div>
-                      <p style={{ fontWeight: 700, fontSize: 16, marginBottom: 2 }}>{c.profiles?.full_name}</p>
+                <div key={c.id} style={{ background: '#1a1a1a', border: '1px solid #2a2a2a', borderRadius: 12, padding: '24px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 16 }}>
+                    <div style={{ flex: 1 }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 4 }}>
+                        <p style={{ fontWeight: 700, fontSize: 17 }}>{c.profiles?.full_name}</p>
+                        {c.years_experience && <span style={{ background: '#1f2937', color: '#9ca3af', fontSize: 12, padding: '2px 10px', borderRadius: 20 }}>{c.years_experience}</span>}
+                      </div>
                       <p style={{ color: '#9ca3af', fontSize: 13, marginBottom: 4 }}>{c.profiles?.email}</p>
-                      <p style={{ color: '#a78bfa', fontSize: 13, marginBottom: 4 }}>{c.specialty} · {c.location}</p>
-                      {c.bio && <p style={{ color: '#9ca3af', fontSize: 13, maxWidth: 500, lineHeight: 1.5, marginTop: 8, fontStyle: 'italic' }}>{c.bio}</p>}
-                      <p style={{ color: '#9ca3af', fontSize: 12, marginTop: 8 }}>Applied {new Date(c.created_at).toLocaleDateString()}</p>
+                      <p style={{ color: '#a78bfa', fontSize: 13, marginBottom: 12 }}>{c.specialty} · {c.location}</p>
+
+                      {/* Verification links */}
+                      <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginBottom: 12 }}>
+                        {c.instagram && (
+                          <a href={`https://instagram.com/${c.instagram.replace('@','')}`} target="_blank" rel="noopener noreferrer"
+                            style={{ display: 'inline-flex', alignItems: 'center', gap: 6, background: '#1a0a2e', border: '1px solid #4c1d95', color: '#a78bfa', borderRadius: 8, padding: '6px 12px', fontSize: 13, textDecoration: 'none', fontWeight: 500 }}>
+                            📸 {c.instagram.startsWith('@') ? c.instagram : `@${c.instagram}`}
+                          </a>
+                        )}
+                        {c.portfolio_url && (
+                          <a href={c.portfolio_url} target="_blank" rel="noopener noreferrer"
+                            style={{ display: 'inline-flex', alignItems: 'center', gap: 6, background: '#0a1a2e', border: '1px solid #1d4ed8', color: '#60a5fa', borderRadius: 8, padding: '6px 12px', fontSize: 13, textDecoration: 'none', fontWeight: 500 }}>
+                            🌐 View Portfolio
+                          </a>
+                        )}
+                        {!c.instagram && !c.portfolio_url && (
+                          <span style={{ color: '#6b7280', fontSize: 13, fontStyle: 'italic' }}>No links provided</span>
+                        )}
+                      </div>
+
+                      {/* Application note */}
+                      {c.application_note && (
+                        <div style={{ background: '#111', border: '1px solid #2a2a2a', borderRadius: 8, padding: '12px 14px', marginBottom: 12, maxWidth: 560 }}>
+                          <p style={{ color: '#6b7280', fontSize: 11, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 6 }}>About their work</p>
+                          <p style={{ color: '#d1d5db', fontSize: 13, lineHeight: 1.6 }}>{c.application_note}</p>
+                        </div>
+                      )}
+
+                      <p style={{ color: '#6b7280', fontSize: 12 }}>Applied {new Date(c.created_at).toLocaleDateString()}</p>
                     </div>
                     <AdminActions creatorId={c.id} />
                   </div>

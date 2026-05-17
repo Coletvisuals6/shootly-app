@@ -11,6 +11,10 @@ export default function SignUp() {
   const [password, setPassword] = useState('')
   const [specialty, setSpecialty] = useState('')
   const [location, setLocation] = useState('')
+  const [instagram, setInstagram] = useState('')
+  const [portfolioUrl, setPortfolioUrl] = useState('')
+  const [yearsExp, setYearsExp] = useState('')
+  const [applicationNote, setApplicationNote] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const [done, setDone] = useState(false)
@@ -24,8 +28,8 @@ export default function SignUp() {
       email,
       password,
       options: {
-        data: { full_name: fullName, role, specialty, location },
-        emailRedirectTo: `${location || window.location.origin}/auth/callback`,
+        data: { full_name: fullName, role, specialty, location, instagram, portfolio_url: portfolioUrl, years_experience: yearsExp, application_note: applicationNote },
+        emailRedirectTo: `${window.location.origin}/auth/callback`,
       },
     })
     if (error) { setError(error.message); setLoading(false); return }
@@ -53,7 +57,7 @@ export default function SignUp() {
 
   return (
     <div style={{ minHeight: '100vh', background: '#0d0d0d', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24 }}>
-      <div style={{ width: '100%', maxWidth: 440 }}>
+      <div style={{ width: '100%', maxWidth: 480 }}>
         <div style={{ textAlign: 'center', marginBottom: 32 }}>
           <Link href="/" style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 8, marginBottom: 24 }}>
             <div style={{ width: 32, height: 32, borderRadius: 8, background: 'linear-gradient(135deg,#f0abfc,#7c3aed)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -97,29 +101,59 @@ export default function SignUp() {
                 <label style={labelStyle}>Email</label>
                 <input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="your@email.com" required style={inputStyle} />
               </div>
-              <div style={{ marginBottom: 16 }}>
+              <div style={{ marginBottom: role === 'creator' ? 16 : 24 }}>
                 <label style={labelStyle}>Password</label>
                 <input type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="Min 8 characters" minLength={8} required style={inputStyle} />
               </div>
+
               {role === 'creator' && (
                 <>
+                  <div style={{ background: '#111', border: '1px solid #2a2a2a', borderRadius: 10, padding: '14px 16px', marginBottom: 16 }}>
+                    <p style={{ fontSize: 12, fontWeight: 600, color: '#a78bfa', marginBottom: 2, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Creator Application</p>
+                    <p style={{ fontSize: 12, color: '#6b7280' }}>We review all creators before they go live. Please fill this out honestly.</p>
+                  </div>
+
                   <div style={{ marginBottom: 16 }}>
-                    <label style={labelStyle}>Specialty (e.g. Wedding Videographer)</label>
-                    <input type="text" value={specialty} onChange={e => setSpecialty(e.target.value)} placeholder="Sports Videographer" required style={inputStyle} />
+                    <label style={labelStyle}>Specialty <span style={{ color: '#6b7280' }}>(e.g. Wedding, Sports, Commercial)</span></label>
+                    <input type="text" value={specialty} onChange={e => setSpecialty(e.target.value)} placeholder="Wedding Videographer" required style={inputStyle} />
                   </div>
                   <div style={{ marginBottom: 16 }}>
                     <label style={labelStyle}>Your City</label>
                     <input type="text" value={location} onChange={e => setLocation(e.target.value)} placeholder="Los Angeles, CA" required style={inputStyle} />
                   </div>
+                  <div style={{ marginBottom: 16 }}>
+                    <label style={labelStyle}>Years of Experience</label>
+                    <select value={yearsExp} onChange={e => setYearsExp(e.target.value)} required style={{ ...inputStyle, cursor: 'pointer' }}>
+                      <option value="" disabled>Select experience level</option>
+                      <option value="Less than 1 year">Less than 1 year</option>
+                      <option value="1–2 years">1–2 years</option>
+                      <option value="3–5 years">3–5 years</option>
+                      <option value="5–10 years">5–10 years</option>
+                      <option value="10+ years">10+ years</option>
+                    </select>
+                  </div>
+                  <div style={{ marginBottom: 16 }}>
+                    <label style={labelStyle}>Instagram Handle <span style={{ color: '#6b7280' }}>(optional)</span></label>
+                    <input type="text" value={instagram} onChange={e => setInstagram(e.target.value)} placeholder="@yourusername" style={inputStyle} />
+                  </div>
+                  <div style={{ marginBottom: 16 }}>
+                    <label style={labelStyle}>Portfolio / Website <span style={{ color: '#6b7280' }}>(optional but recommended)</span></label>
+                    <input type="url" value={portfolioUrl} onChange={e => setPortfolioUrl(e.target.value)} placeholder="https://yourwebsite.com" style={inputStyle} />
+                  </div>
+                  <div style={{ marginBottom: 24 }}>
+                    <label style={labelStyle}>Tell us about your work <span style={{ color: '#6b7280' }}>(what do you shoot, what gear do you use?)</span></label>
+                    <textarea value={applicationNote} onChange={e => setApplicationNote(e.target.value)} placeholder="I specialize in wedding films and have shot 50+ weddings. I use a Sony FX3 and DJI Ronin..." required rows={4} style={{ ...inputStyle, resize: 'vertical', lineHeight: 1.5 }} />
+                  </div>
                 </>
               )}
+
               {error && <p style={{ color: '#f87171', fontSize: 13, marginBottom: 16, background: '#2a0a0a', padding: '10px 14px', borderRadius: 8 }}>{error}</p>}
               <div style={{ display: 'flex', gap: 10 }}>
                 <button type="button" onClick={() => setStep('role')} style={{ flex: 1, background: '#141414', border: '1px solid #2a2a2a', color: '#fff', borderRadius: 10, padding: 13, fontSize: 14, fontWeight: 600, cursor: 'pointer' }}>
                   Back
                 </button>
                 <button type="submit" disabled={loading} style={{ flex: 2, background: 'linear-gradient(135deg,#ec4899,#8b5cf6)', color: 'white', border: 'none', borderRadius: 10, padding: 13, fontSize: 14, fontWeight: 600, cursor: 'pointer', opacity: loading ? 0.7 : 1 }}>
-                  {loading ? 'Creating account...' : 'Create Account'}
+                  {loading ? 'Creating account...' : 'Submit Application'}
                 </button>
               </div>
             </form>
