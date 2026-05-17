@@ -1,11 +1,19 @@
 'use client'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
 
 export default function SignUp() {
   const [step, setStep] = useState<'role' | 'form'>('role')
   const [role, setRole] = useState<'client' | 'creator'>('client')
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    if (params.get('role') === 'creator') {
+      setRole('creator')
+      setStep('form')
+    }
+  }, [])
   const [fullName, setFullName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')

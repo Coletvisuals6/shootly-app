@@ -62,7 +62,7 @@ export default function Navbar() {
           ) : (
             <>
               <Link href="/auth/signin" style={{ color: '#9ca3af', textDecoration: 'none', fontSize: 14 }}>Sign In</Link>
-              <Link href="/auth/signup" style={{ background: 'linear-gradient(135deg, #ec4899, #8b5cf6)', color: 'white', textDecoration: 'none', borderRadius: 8, padding: '9px 18px', fontSize: 14, fontWeight: 600 }}>
+              <Link href="/auth/signup?role=creator" style={{ background: 'linear-gradient(135deg, #ec4899, #8b5cf6)', color: 'white', textDecoration: 'none', borderRadius: 8, padding: '9px 18px', fontSize: 14, fontWeight: 600 }}>
                 Join as Creator
               </Link>
             </>
