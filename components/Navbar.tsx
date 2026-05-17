@@ -11,12 +11,17 @@ export default function Navbar() {
 
   useEffect(() => {
     const getProfile = async () => {
-      const { data: { user } } = await supabase.auth.getUser()
-      if (user) {
-        const { data } = await supabase.from('profiles').select('*').eq('id', user.id).single()
-        setProfile(data)
+      try {
+        const { data: { user } } = await supabase.auth.getUser()
+        if (user) {
+          const { data } = await supabase.from('profiles').select('*').eq('id', user.id).single()
+          setProfile(data)
+        }
+      } catch (e) {
+        // ignore errors, just show signed-out state
+      } finally {
+        setLoading(false)
       }
-      setLoading(false)
     }
     getProfile()
     const { data: listener } = supabase.auth.onAuthStateChange(() => getProfile())
