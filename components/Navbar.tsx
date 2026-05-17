@@ -6,7 +6,7 @@ import type { Profile } from '@/lib/types'
 
 export default function Navbar() {
   const [profile, setProfile] = useState<Profile | null>(null)
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
   const supabase = createClient()
 
   useEffect(() => {
